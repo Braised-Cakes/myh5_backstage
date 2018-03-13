@@ -35,6 +35,19 @@ module.exports.getCountSync = promisify((collection, option = {}, cb) => {
  * @param cb
  * @return 成功返回数据
  */
+module.exports.findOneSync = promisify((collection, option = {}, cb) => {
+    collection.findOne(option).exec((err, data) => {
+        if (err) throw err;
+        cb(null, data)
+    })
+});
+/**
+ * 获取数据
+ * @param collection
+ * @param option { limit, page, find, order }
+ * @param cb
+ * @return 成功返回数据
+ */
 module.exports.getDataSync = promisify((collection, option = {}, cb) => {
     const limit = Number(option.limit) || DEFAULT_PAGE.limit
     const page = Number(option.page) || DEFAULT_PAGE.page
@@ -64,5 +77,21 @@ module.exports.delDataSync = promisify((collection, option = {}, cb) => {
             throw err
         }
         cb(null, msg.result.n)
+    })
+});
+
+
+/**
+ * 删除指定图片
+ * @param collection
+ * @param delList 图片id数组或字符串，如['id001', 'id002']或'id001'
+ * @return 成功返回1，失败返回0
+ */
+module.exports.removeSync = promisify((collection, query = {}, cb) => {
+    collection.remove(query, (err, docs) => {
+        if (err) {
+            throw err
+        }
+        cb(null, docs)
     })
 });
